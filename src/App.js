@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import ListaMonstros from './components/ListaMonstros';
 
 function App() {
+  const [dados, setDados] = useState([]);
+
+  const apagarDados = () =>{
+    setDados([]);
+  }
+
+  useEffect(() =>{
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(response => response.json())
+      .then(dadosAPI => setDados(dadosAPI.slice(0,5)))
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <main>
+      <section className="container">
+        <h1>{dados.length} monstros</h1>
+
+        <ListaMonstros dados={dados} />
+
+        <button className="btn-azul" type="button" onClick={apagarDados}>limpar monstros</button>
+      </section>
+    </main>
   );
 }
 
